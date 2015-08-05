@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style media="screen">
+      .rules{
+        color:blue;
+      }.row{
+        border: 1px solid gray;
+        margin: 10px 0px;
+        padding: 5px 0px;
+      }.error{
+        color:red;
+      }.success{
+        color:green;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <%if(locals.result){%>
+          <%if(!success){%>
+          <div class="col-md-12">
+            <%if(payment.toLowerCase() == 'paypal'){ %>
+              <%if(result.response.details){%>
+                <%for(i=0;i < result.response.details.length;i++){%>
+                  <label for="" class="error"><%=payment%> : <%= JSON.stringify(result.response.details[i]) %></label>
+                <%}%>
+              <%}else{%>
+                <label for="" class="error"><%=payment%> : <%= result.message %></label>
+              <%}%>
+            <%}else{%>
+              <label for="" class="error"><%=payment%> : <%= result.message %></label>
+            <%}%>
+          </div>
+          <%}else {%>
+          <div class="col-md-12">
+            <label for="" class="success"><%=payment%> : Payment success</label>
+          </div>
+          <%}%>
+        <%}%>
+    </div>
+
+
+
+
+      <%for(var i=0;i < data.length;i++){%>
+      <form class="" action="/test<%=i%>" method="post">
+      <div class="row">
+        <div class="col-md-1">
+          <input type="text" name="testData" value="<%=i%>" class="form-control">
+        </div>
+        <div class="col-md-10">
+          <label for="" style="word-wrap: break-word;"><%-JSON.stringify(data[i]["payment"])%></label>
+        </div>
+        <div class="col-md-1">
+          <input type="submit" class="form-control submit"name="submit" value="submit">
+        </div>
+
+        <div class="col-md-12">
+          <label for="" class="rules"><%-JSON.stringify(data[i]["rules"])%> </label>
+        </div>
+        <div class="col-md-12">
+          <label for="" class="row-<%=i%>"></label>
+        </div>
+      </div>
+      </form>
+      <%}%>
+    </div>
+    <script type="text/javascript">
+       $(document).ready(function(){
+       });
+      //  function submitCredit(dataRow){
+      //    $.ajax({
+      //     method: "POST",
+      //     url: "/test",
+      //     data: { testData: dataRow }
+      //   })
+      //     .done(function( msg ) {
+      //       alert( "Data Saved: " + msg );
+      //     });
+      //  }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .row{
+        margin-bottom: 10px;
+      }
+      .error{
+        color: red;
+      }
+      .success{
+        color:green;
+      }
+      label{
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+  <form id="form" class="" action="/" method="post">
+    <div class="container">
+      <div class="row">
+        <%if(locals.result){%>
+          <%if(!success){%>
+          <div class="col-md-12">
+            <%if(payment.toLowerCase() == 'paypal'){ %>
+              <%if(result.response.details){%>
+                <%for(i=0;i < result.response.details.length;i++){%>
+                  <label for="" class="error"><%=payment%> : <%= JSON.stringify(result.response.details[i]) %></label>
+                <%}%>
+              <%}else{%>
+                <label for="" class="error"><%=payment%> : <%= result.message %></label>
+              <%}%>
+            <%}else{%>
+              <label for="" class="error"><%=payment%> : <%= result.message %></label>
+            <%}%>
+          </div>
+          <%}else {%>
+          <div class="col-md-12">
+            <label for="" class="success"><%=payment%> : Payment success</label>
+          </div>
+          <%}%>
+        <%}%>
+    </div>
+        <div class="row">
+          <div class="col-md-8">
+            <section style="margin-bottom:30px; border-bottom:1px solid gray;">
+
+            <div class="row">
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="price">Price</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8">
+                  <input id="price" type="number"required name="price" value="" class="form-control" placeholder="Price">
+                </div>
+                <div class="col-md-4">
+                  <select id="currency" required name="currency" class="form-control" name="">
+                    <option value="">-- Please select --</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="THB">THB</option>
+                    <option value="HKD">HKD</option>
+                    <option value="SGD">SGD</option>
+                    <option value="AUD">AUD</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="fullName">Full name</label>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input id="fullName" type="text" required name="fullName" value="" class="form-control" placeholder="Full name">
+                </div>
+              </div>
+            </div>
+            </section>
+
+            <section>
+              <div class="row">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="holderName">Holder name</label>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <input id="holderFirstname" type="text" required name="holderFirstname" value="" class="form-control" placeholder="First name">
+                  </div>
+                  <div class="col-md-6">
+                    <input id="holderLastname" type="text" required name="holderLastname" value="" class="form-control" placeholder="Last name">
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="creditCard">Credit card no.</label>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-8">
+                    <input id="creditCard" type="text" step="false" required name="creditCard" value="" class="form-control" placeholder="xxxx-xxxx-xxxx-xxx">
+                  </div>
+                  <div class="col-md-4">
+                    <select class="form-control" required name="cardType" id="cardType">
+                      <option value="">-- Please select --</option>
+                      <option value="VISA">VISA</option>
+                      <option value="MasterCard">MasterCard</option>
+                      <option value="AMEX">AMEX</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="expiration">Expiration</label>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-2">
+                    <!--<input id="expiration" type="text" required name="expiration" value="" class="form-control" pattern="^((0?)+\d{1,2})+\/+(\d{4})$" placeholder="xx/xxxx">-->
+                    <select class="form-control" required name="exMonth">
+                      <option value="">-- Month --</option>
+                      <% for(i=1;i<=12;i++){ %>
+                        <option value="<%= i %>"><%= i %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <select class="form-control" required name="exYear">
+                      <option value="">-- Year --</option>
+                      <% var year=new Date().getFullYear();
+                      for(i=year;i<=year+12;i++){ %>
+                        <option value="<%= i %>"><%= i %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="ccv">CVV</label>
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <input id="cvv" type="text" required name="cvv" value="" class="form-control" pattern="^\d{3,4}$" placeholder="XXX">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <input type="submit" name="submit" class="form-control round" value="Submit">
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="col-md-4">
+            <div class="row">
+              <div class="col-md-12">
+                Credit card number for test
+              </div>
+              <div class="col-md-12">
+                Paypal : <a style="word-wrap: break-word;" href="http://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm">http://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm</a>
+              </div>
+              <div class="col-md-12">
+                Braintree : <a style="word-wrap: break-word;" href="https://developers.braintreepayments.com/ios+ruby/reference/general/testing">https://developers.braintreepayments.com/ios+ruby/reference/general/testing</a>
+              </div>
+              <div class="col-md-12">
+                Unit test  <a href="/test">url : test</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </form>
+
+  <script>
+    $(document).ready(function() {
+
+    });
+</script>
+  </body>
+</html>
